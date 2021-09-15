@@ -1,0 +1,10 @@
+liste des tâches à faire (dans l'ordre chronologique) 
+
+trouver les éléments de skin et de décors
+coder le saut de flappy
+coder les décors
+coder le défilement
+coder les collisions
+ajouter des animations sur les skins (→ faire chauffer photoshop)
+coder les skins aléatoire pour les décors
+coder le menu pour permettre de changer le skin de flappy
