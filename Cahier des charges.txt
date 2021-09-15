@@ -1,0 +1,23 @@
+Projet N°4 -> Flappy Bird 
+
+participant : BOISGARD Théo 
+
+Nom Du Projet : Flappy is Flying 
+
+ 
+
+ 
+
+ 
+
+Interface globale du jeu voulu, la partie P contiendra le score et la partie jeu.... le jeu, c’est à dire : 
+
+ 
+
+-Flappy le super oiseau  
+
+-les obstacles 
+
+-le fond 
+
+ 
