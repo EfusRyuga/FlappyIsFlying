@@ -1,0 +1,20 @@
+algo FlappyIsFlying
+
+image = background de la fenetre
+obstacleskin = [nom de toutes les images pouvant composer les obstacles]
+playerskin = [liste de skin pouvant être choisi par le joueur]
+class flappy:
+	image = input joueur Onclick
+	definition de la zone de collision
+	methode “saut” :
+	si espace est pressé : flappy remonte
+class obstacle:
+	image = aléatoire dans obstacleskin
+	definition de la zone de collision
+def gérerCollision():
+	si  flappy touche obstacle :
+	flappy tombe au sol
+	afficher le menu pour rejouer
+	
+def défilement():
+	décors bouge toute les 1s de x pixel
