@@ -1,15 +1,15 @@
 # ce code contient ma version du jeu flappy bird, il reprend les bases du dit jeu.
 # création du repository : 15/09/21  finalistion du projet : X/X/X
-# temps passé sur le projet : Xh ->  2h + 2h + 3h30 + 46min
+# temps passé sur le projet : Xh ->  2h + 2h + 3h30 + 46min + 2h
 
-import pygame, sys, random 
+import pygame, sys, random  #import des lib random système et pygame
+
 class game:
+#méthode de génération du sol
 	def formation_sol():
 		screen.blit(floor_surface,(sol_x_pos,900))
 		screen.blit(floor_surface,(sol_x_pos + 576,900))
-
-
-
+#méthode pour les pipes
 	def check_col(pipes):
 		global can_score
 		for pipe in pipes:
@@ -17,13 +17,12 @@ class game:
 				death_sound.play()
 				can_score = True
 				return False
-
-		if bird_rect.top <= -100 or bird_rect.bottom >= 900:
+		if bird_rect.top <= -100 or bird_rect.bottom >= 900: #définition du top et du bot où peut évoluer flappy
 			can_score = True
+			death_sound.play()
 			return False
-
 		return True
-	
+#méthode d'affichage du score	
 	def afficher_score(game_state):
 		if game_state == 'main_game':
 			score_surface = game_font.render(str(int(score)),True,(255,255,255))
@@ -37,18 +36,18 @@ class game:
 			high_score_surface = game_font.render(f'High score: {int(high_score)}',True,(255,255,255))
 			high_score_rect = high_score_surface.get_rect(center = (288,850))
 			screen.blit(high_score_surface,high_score_rect)
-
+#méthode pour le high score
 	def update_score(score, high_score):
 		if score > high_score:
 			high_score = score
 		return high_score
 
 class flappy:
-
+#méthode d'influence de la gravité
 	def effet_grav(bird):
 		new_bird = pygame.transform.rotozoom(bird,-bird_movement * 4, 2) #4 = vitesse de rota et 1 = image scale
 		return new_bird
-
+#méthode pour l'animation de flappy
 	def flappy_frames():
 		new_bird = bird_frames[bird_index]
 		new_bird_rect = new_bird.get_rect(center = (100,bird_rect.centery))
@@ -57,7 +56,6 @@ class flappy:
 class tuyaux:
 	def score_verif():
 		global score, can_score 
-		
 		if pipe_list:
 			for pipe in pipe_list:
 				if 95 < pipe.centerx < 105 and can_score: # reste à définir l'utilité des bornes
@@ -66,18 +64,19 @@ class tuyaux:
 					can_score = False
 				if pipe.centerx < 0: # vérification de l'allignement de flappy avec les tuyaux
 					can_score = True
+#méthode de génération de tuyaux
 	def crea_tuyaux():
 		random_pipe_pos = random.choice(pipe_height)
 		bottom_pipe = pipe_surface.get_rect(midtop = (700,random_pipe_pos))
 		top_pipe = pipe_surface.get_rect(midbottom = (700,random_pipe_pos - 300))
 		return bottom_pipe,top_pipe
-
+#méthode de déplacement des tuyaux
 	def deplacement_tuyaux(pipes):
 		for pipe in pipes:
 			pipe.centerx -= 5
 		visible_pipes = [pipe for pipe in pipes if pipe.right > -50]
 		return visible_pipes
-
+# méthode d'affichage des tuyaux
 	def afficher_tuyaux(pipes):
 		for pipe in pipes:
 			if pipe.bottom >= 1024: 
@@ -86,21 +85,23 @@ class tuyaux:
 				flip_pipe = pygame.transform.flip(pipe_surface,False,True)
 				screen.blit(flip_pipe,pipe)
 
-pygame.init()
-screen = pygame.display.set_mode((576,1024))
-clock = pygame.time.Clock()
-pygame.display.set_caption('Flappy is flying')
-PI = pygame.image.load('./Assets/interface/favicon.ico')
-pygame.display.set_icon(PI)
-game_font = pygame.font.Font('font.ttf',40)
+pygame.init() #init de pygame
+screen = pygame.display.set_mode((576,1024)) #taille de la fenêtre
+clock = pygame.time.Clock() #utilisation de l'horloge, qui servira pour raffraichir l'image
+pygame.display.set_caption('Flappy is flying') # titre de la fenêtre
+PI = pygame.image.load('./Assets/interface/favicon.ico') # icone de la fenetre + icone de bas de page
+pygame.display.set_icon(PI) # on set l'icone
+game_font = pygame.font.Font('font.ttf',40) # on définit la police utilisée pour l'écriture
 
-# var
-gravity = 0.35
+# variables générales de jeu
+gravity = 0.35 #définit la vitesse où flappy tombe (force sur le vecteur y)
 bird_movement = 0
-game_active = True
-score = 0
-high_score = 0
-can_score = True
+game_active = False #ini du boolean sur false pour arriver sur le menu au lancement du jeu
+score = 0 #ini du score à 0
+high_score = 0 #ini du high score à 0 (ne sauvegarde pas les anciens high score)
+can_score = True #ini de la possibilité du scoring
+
+#choix random du skin de fond pour débuter la partie
 randbg = random.choice(['./Assets/background/background-day.png','./Assets/background/background-night.png'])
 bg_surface = pygame.image.load(randbg).convert()
 bg_surface = pygame.transform.scale2x(bg_surface)
@@ -109,7 +110,7 @@ floor_surface = pygame.image.load('./Assets/background/base.png').convert()
 floor_surface = pygame.transform.scale2x(floor_surface)
 sol_x_pos = 0
 
- #changement skin
+ #choix random de skin de flappy pour débuter la partie
 PlayerSkin = random.choice(['bluebird','redbird','yellowbird'])
 if PlayerSkin == 'bluebird':
     bird_downflap = pygame.image.load('./Assets/playerskin/bluebird-downflap.png').convert_alpha()
@@ -133,7 +134,7 @@ bird_rect = bird_surface.get_rect(center = (100,512))
 BIRDFLAP = pygame.USEREVENT + 1
 pygame.time.set_timer(BIRDFLAP,200)
 
-rand_tuyaux = random.choice(['./Assets/obstacleskin/pipe-green.png','./Assets/obstacleskin/pipe-red.png'])
+rand_tuyaux = random.choice(['./Assets/obstacleskin/pipe-green.png','./Assets/obstacleskin/pipe-red.png']) #choisis un skin random pour débuter
 pipe_surface = pygame.image.load(rand_tuyaux)
 pipe_surface = pygame.transform.scale2x(pipe_surface)
 pipe_list = []
@@ -170,6 +171,7 @@ while True: # pour toujours, vérification d'appuie de touche
 				score = 0
 			if event.key == pygame.K_h and game_active == False:
 				print("welcome to menu, here, you will get some help \n  all command, if pressed on menu, will change some parameters : \n y -> flappy is yellow \n r -> flappy is red \n b -> flappy is blue")
+#change flappy skin
 			if event.key == pygame.K_y and game_active == False:
 				bird_downflap = pygame.image.load('./Assets/playerskin/yellowbird-downflap.png').convert_alpha()
 				bird_midflap = pygame.image.load('./Assets/playerskin/yellowbird-midflap.png').convert_alpha()
@@ -197,6 +199,7 @@ while True: # pour toujours, vérification d'appuie de touche
 				bird_surface = bird_frames[bird_index]
 				bird_rect = bird_surface.get_rect(center = (100,512))
 				print("flappy is now red")
+#change pipe skin
 			if event.key == pygame.K_RIGHT and game_active == False:
 				pipe_surface = pygame.image.load('./Assets/obstacleskin/pipe-red.png')
 				pipe_surface = pygame.transform.scale2x(pipe_surface)
@@ -205,6 +208,16 @@ while True: # pour toujours, vérification d'appuie de touche
 				pipe_surface = pygame.image.load('./Assets/obstacleskin/pipe-green.png')
 				pipe_surface = pygame.transform.scale2x(pipe_surface)
 				print("pipe is now green")
+			if event.key == pygame.K_n and game_active == False:
+				bg_surface = pygame.image.load('./Assets/background/background-night.png').convert()
+				bg_surface = pygame.transform.scale2x(bg_surface)
+#change background skin
+				print('background is now night')
+			if event.key == pygame.K_d and game_active == False:
+				bg_surface = pygame.image.load('./Assets/background/background-day.png').convert()
+				bg_surface = pygame.transform.scale2x(bg_surface)
+				print('background is now day')
+                
 
 		if event.type == SPAWNPIPE:
 			pipe_list.extend(tuyaux.crea_tuyaux()) #ajout d'un tuyau à la liste
@@ -248,7 +261,7 @@ while True: # pour toujours, vérification d'appuie de touche
 
 		#sol
 		sol_x_pos -= 1 # vitesse lente pour avoir un menu chill
-		game.formation_sol() # appel de la méthode formation-sol() dans la class game 
+		game.formation_sol() # appel de la méthode formation_sol() dans la class game 
 		if sol_x_pos <= -576: # création d'une loop pour que le sol ne disparaisse jamais
 			sol_x_pos = 0 #réinitialisation de la position du sol
 
