@@ -19,21 +19,21 @@ class game:
 				return False
 		if bird_rect.top <= -100 or bird_rect.bottom >= 900: #définition du top et du bot où peut évoluer flappy
 			can_score = True
-			death_sound.play()
+			death_sound.play() # son de mort joué si flappy atteint les bornes de hauteur/de bas
 			return False
 		return True
 #méthode d'affichage du score	
 	def afficher_score(game_state):
 		if game_state == 'main_game':
 			score_surface = game_font.render(str(int(score)),True,(255,255,255))
-			score_rect = score_surface.get_rect(center = (288,100))
+			score_rect = score_surface.get_rect(center = (288,100)) # coordonnées du score
 			screen.blit(score_surface,score_rect)
 		if game_state == 'game_over':
 			score_surface = game_font.render(f'Score: {int(score)}' ,True,(255,255,255))
 			score_rect = score_surface.get_rect(center = (288,100))
 			screen.blit(score_surface,score_rect)
 
-			high_score_surface = game_font.render(f'High score: {int(high_score)}',True,(255,255,255))
+			high_score_surface = game_font.render(f'Local High Score: {int(high_score)}',True,(255,255,255))
 			high_score_rect = high_score_surface.get_rect(center = (288,850))
 			screen.blit(high_score_surface,high_score_rect)
 #méthode pour le high score
@@ -153,22 +153,22 @@ SCOREEVENT = pygame.USEREVENT + 2
 pygame.time.set_timer(SCOREEVENT,100)
 
 while True: # pour toujours, vérification d'appuie de touche
-	for event in pygame.event.get():
+	for event in pygame.event.get(): # pour quitter le jeu
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			sys.exit()
-		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_SPACE and game_active:
+		if event.type == pygame.KEYDOWN: 
+			if event.key == pygame.K_SPACE and game_active: # faire sauter l'oiseau
 				bird_movement = 0
-				bird_movement -= 12
-				flap_sound.play()
+				bird_movement -= 10 # -=  fait remonter l'oiseau alors que += le fait descendre
+				flap_sound.play() # on joue le son de l'oiseau qui bats des ailes
 
-			if event.key == pygame.K_SPACE and game_active == False:
-				game_active = True
-				pipe_list.clear()
-				bird_rect.center = (100,512)
-				bird_movement = 0
-				score = 0
+			if event.key == pygame.K_SPACE and game_active == False: # si espace pressé -> on lance le jeu
+				game_active = True # vérification qu'on est pas dans les menus
+				pipe_list.clear() # on clear tous les tuyaux
+				bird_rect.center = (100,512) # on fait apparaitre flappy
+				bird_movement = -5 #définit le mouvement de l'oiseau au lancement du jeu
+				score = 0 # on init le score à 0
 			if event.key == pygame.K_h and game_active == False:
 				print("welcome to menu, here, you will get some help \n  all command, if pressed on menu, will change some parameters : \n y -> flappy is yellow \n r -> flappy is red \n b -> flappy is blue")
 #change flappy skin
@@ -222,13 +222,13 @@ while True: # pour toujours, vérification d'appuie de touche
 		if event.type == SPAWNPIPE:
 			pipe_list.extend(tuyaux.crea_tuyaux()) #ajout d'un tuyau à la liste
 
-		if event.type == BIRDFLAP: #fait tourner les frames de flappy pour créer son animation de vol
-			if bird_index < 2:
+		if event.type == BIRDFLAP: # vérif de l'event BIRDFLAP -> en jeu avec l'oiseau d'affiché
+			if bird_index < 2: # fait tourner les frames de flappy
 				bird_index += 1
 			else:
 				bird_index = 0
 
-			bird_surface,bird_rect = flappy.flappy_frames()
+			bird_surface,bird_rect = flappy.flappy_frames() # définition de l'animation de flappy
 
 	screen.blit(bg_surface,(0,0)) #affiche le fond d'écran
 
