@@ -7,8 +7,8 @@ import pygame, sys, random  #import des lib random système et pygame
 class game:
 #méthode de génération du sol
 	def formation_sol():
-		screen.blit(floor_surface,(sol_x_pos,900))
-		screen.blit(floor_surface,(sol_x_pos + 576,900))
+		screen.blit(floor_surface,(sol_x_pos,900)) # sol_x_pos = variable pour faire défiler le sol et 900 = position sur l'axe y
+		screen.blit(floor_surface,(sol_x_pos + 576,900)) # sol_x_pos + 576 pour créer le défilement infini
 #méthode pour les pipes
 	def check_col(pipes):
 		global can_score
@@ -79,10 +79,10 @@ class tuyaux:
 # méthode d'affichage des tuyaux
 	def afficher_tuyaux(pipes):
 		for pipe in pipes:
-			if pipe.bottom >= 1024: 
-				screen.blit(pipe_surface,pipe)
+			if pipe.bottom >= 1020:  # si le pipe est plus bas que 1020 -> on ne le retourne pas
+				screen.blit(pipe_surface,pipe) 
 			else:
-				flip_pipe = pygame.transform.flip(pipe_surface,False,True)
+				flip_pipe = pygame.transform.flip(pipe_surface,False,True) # sinon, on le retourne à 180 pour qu'il ait la tête en bas
 				screen.blit(flip_pipe,pipe)
 
 pygame.init() #init de pygame
@@ -255,8 +255,8 @@ while True: # pour toujours, vérification d'appuie de touche
 		tuyaux.score_verif() #vérification du score (si le score = score +1)
 		game.afficher_score('main_game') #affichage du score au state game state = main_game
 	else: # si dans le menu
-		screen.blit(game_over_surface,game_over_rect)
-		high_score = game.update_score(score,high_score)
+		screen.blit(game_over_surface,game_over_rect) # affichage de la "game_over_surface"
+		high_score = game.update_score(score,high_score) # variable high score
 		game.afficher_score("game_over") #affichage du score au state game state = game_over
 
 		#sol
@@ -264,10 +264,6 @@ while True: # pour toujours, vérification d'appuie de touche
 		game.formation_sol() # appel de la méthode formation_sol() dans la class game 
 		if sol_x_pos <= -576: # création d'une loop pour que le sol ne disparaisse jamais
 			sol_x_pos = 0 #réinitialisation de la position du sol
-
-	# Floor
 	
-	
-
 	pygame.display.update() # créer l'image
 	clock.tick(100) # définit le nombre de fps plus le chiffre est grand plus le rafraichissement est régulier
