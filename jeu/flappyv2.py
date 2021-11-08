@@ -34,7 +34,7 @@ class game:
             score_surface = game_font.render(str(int(score)),True,(255,255,255)) # font.render 3 args = text, blend, color
             score_rect = score_surface.get_rect(center = (288,100)) # coordonnées du score
             screen.blit(score_surface,score_rect)
-
+          #méthode d'affichage sur l'écran game over
         if game_state == 'gameover':
             score_surface = game_font.render(f'Score : {int(score)}' ,True,(0,0,0))
             score_rect = score_surface.get_rect(center = (293,102))
@@ -109,7 +109,7 @@ class game:
             high_score_surface = game_font.render(f'Local High Score : {high_score}',True,(255,255,255))
             high_score_rect = high_score_surface.get_rect(center = (288,850))
             screen.blit(high_score_surface,high_score_rect)
-
+        #méthode d'affichage pour le menu
         if game_state == 'menu':
             score1_surface = game_font.render(f'Score : {int(score)}' ,True,(0,0,0))
             score1_rect = score1_surface.get_rect(center = (293,102))
@@ -124,12 +124,12 @@ class game:
             high_score_surface = game_font.render(f'Local High Score : {high_score}',True,(255,255,255)) 
             high_score_rect = high_score_surface.get_rect(center = (288,850))
             screen.blit(high_score_surface,high_score_rect)
-    #méthode pour le high score
+    # ancienne méthode pour le high score
  #   def update_score(score, high_score):
   #      if score > high_score:
   #          high_score = score
   #      return high_score
-
+#nouvelle méthode, qui permet de l'enregistrer
     def update_scorev2(score, high_score):
         with open("score.txt","r") as f:
             lines = f.readlines()
