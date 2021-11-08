@@ -1,6 +1,6 @@
 # ce code contient ma version du jeu flappy bird, il reprend les bases du dit jeu.
-# création du repository : 15/09/21  finalistion du projet : X/X/X
-# temps passé sur le projet : Xh ->  2h + 2h + 3h30 + 46min + 2h +2 +2h30
+# création du repository : 15/09/21  finalistion du projet : 28/10/21
+# temps passé sur le projet : 12h46
 
 import pygame, sys, random,time  #import des lib random système et pygame
 
